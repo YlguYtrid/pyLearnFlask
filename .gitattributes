@@ -1,0 +1,12 @@
+# 设置自动换行符转换的行为
+* text=auto
+
+# 保持LF换行符，不转换为CRLF
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+
+# 对于二进制文件，禁用换行符转换
+*.jpg binary
+*.png binary
+*.gif binary
