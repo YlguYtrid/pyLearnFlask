@@ -57,6 +57,7 @@ ignore = [
     "B023",
     "B028", # No explicit `stacklevel` keyword argument found
     "B904",
+    "B905",
     "C408", # C408 ignored because we like the dict keyword argument syntax
     "COM812", # conflict with formatter!
     "COM819", # conflict with formatter!
