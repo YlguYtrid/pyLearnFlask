@@ -1,6 +1,8 @@
 import pytest
 
-from app import Movie, User, app, db, forge, initdb
+from watchlist import app, db
+from watchlist.commands import forge, initdb
+from watchlist.models import Movie, User
 
 
 @pytest.fixture(scope='session')
@@ -54,6 +56,15 @@ class TestWatchlist:
         response = client.get('/')
         data = response.get_data(as_text=True)
         assert 'Login' in data
+        assert 'Logout' not in data
+        assert 'Settings' not in data
+        assert '<form method="post">' not in data
+        assert 'Delete' not in data
+        assert 'Edit' not in data
+
+        response = client.post('/')
+        data = response.get_data(as_text=True)
+        assert 'Login' not in data
         assert 'Logout' not in data
         assert 'Settings' not in data
         assert '<form method="post">' not in data
