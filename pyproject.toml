@@ -1,9 +1,23 @@
 [project]
 requires-python = ">=3.12"
+name = "pyLearnFlask"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ylgu Ytrid", email = "37318504+YlguYtrid@users.noreply.github.com"},
+]
+dependencies = [
+    "python-dotenv",
+    "flask",
+    "flask-login",
+    "flask-sqlalchemy",
+]
+readme = "README.md"
+license = {text = "MIT"}
 
 
 [tool.poetry]
-name = "pylearnflask"
+name = "pyLearnFlask"
 version = "0.1.0"
 description = ""
 authors = ["Ylgu Ytrid <37318504+YlguYtrid@users.noreply.github.com>"]
@@ -11,15 +25,17 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-flask = "^3.0.1"
-pytest = "^8.0.0"
-viztracer = "^0.16.1"
-coverage = "^7.4.1"
-flask-sqlalchemy = "^3.1.1"
 python-dotenv = "^1.0.1"
-ruff = "^0.2.0"
+flask = "^3.0.2"
 flask-login = "^0.6.3"
+flask-sqlalchemy = "^3.1.1"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.1"
+pytest = "^8.0.1"
+coverage = "^7.4.1"
+viztracer = "^0.16.1"
+watchdog = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]

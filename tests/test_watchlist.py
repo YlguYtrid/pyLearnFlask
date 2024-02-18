@@ -186,7 +186,7 @@ class TestWatchlist:
         assert result.exit_code == 0
         assert 'Done.' in result.output
         with app.app_context():
-            assert db.session.query(Movie).count() != 0
+            assert db.session.scalar(db.select(db.func.count(Movie.id))) != 0
 
     def test_initdb_command(self):
         result = runner.invoke(initdb)
@@ -196,20 +196,21 @@ class TestWatchlist:
         with app.app_context():
             db.drop_all()
             db.create_all()
-        result = runner.invoke(args=['admin', '--username', 'grey', '--password', '123'])
+            result = runner.invoke(args=['admin', '--username', 'grey', '--password', '123'])
         assert result.exit_code == 0
         assert 'Creating user...' in result.output
         assert 'Done.' in result.output
         with app.app_context():
-            assert db.session.query(User).count() == 1
-            assert db.session.query(User).first().username == 'grey'
-            assert db.session.query(User).first().validate_password('123')
+            assert db.session.scalar(db.select(db.func.count(User.id))) == 1
+            assert db.first_or_404(db.select(User)).username == 'grey'
+            assert db.first_or_404(db.select(User)).validate_password('123')
 
     def test_admin_command_update(self):
-        result = runner.invoke(args=['admin', '--username', 'peter', '--password', '456'])
+        with app.app_context():
+            result = runner.invoke(args=['admin', '--username', 'peter', '--password', '456'])
         assert 'Updating user...' in result.output
         assert 'Done.' in result.output
         with app.app_context():
-            assert db.session.query(User).count() == 1
-            assert db.session.query(User).first().username == 'peter'
-            assert db.session.query(User).first().validate_password('456')
+            assert db.session.scalar(db.select(db.func.count(User.id))) == 1
+            assert db.first_or_404(db.select(User)).username == 'peter'
+            assert db.first_or_404(db.select(User)).validate_password('456')

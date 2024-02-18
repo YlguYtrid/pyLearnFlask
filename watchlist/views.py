@@ -1,14 +1,15 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
-from watchlist import app, db
-from watchlist.models import Movie, User
+from . import app, db
+from .models import Movie, User
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return render_template('index.html', movies=Movie.query.all())
+        movies = db.session.scalars(db.select(Movie)).all()
+        return render_template('index.html', movies=movies)
 
     if not current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -29,7 +30,7 @@ def index():
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
 def edit(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
+    movie = db.get_or_404(Movie, movie_id)
     if request.method == 'GET':
         return render_template('edit.html', movie=movie)
 
@@ -49,7 +50,7 @@ def edit(movie_id):
 @app.route('/movie/delete/<int:movie_id>', methods=['POST'])
 @login_required
 def delete(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
+    movie = db.get_or_404(Movie, movie_id)
     db.session.delete(movie)
     db.session.commit()
     flash('Item deleted.')
@@ -67,7 +68,7 @@ def settings():
         flash('Invalid input.')
         return redirect(url_for('settings'))
 
-    user = User.query.first()
+    user = db.first_or_404(db.select(User))
     user.name = name
     db.session.commit()
     flash('Settings updated.')
@@ -85,7 +86,7 @@ def login():
         flash('Invalid input.')
         return redirect(url_for('login'))
 
-    user = User.query.first()
+    user = db.first_or_404(db.select(User))
     if user and username == user.username and user.validate_password(password):
         login_user(user)
         flash('Login success.')

@@ -1,7 +1,7 @@
 import click
 
-from watchlist import app, db
-from watchlist.models import User, Movie
+from . import app, db
+from .models import Movie, User
 
 
 @app.cli.command()
@@ -50,16 +50,16 @@ def admin(username, password):
     """Create user."""
     db.create_all()
 
-    user = User.query.first()
-    if user is not None:
-        click.echo('Updating user...')
-        user.username = username
-        user.set_password(password)
-    else:
+    user: User | None = db.session.scalar(db.select(User))
+    if user is None:
         click.echo('Creating user...')
         user = User(username=username, name='Admin')
         user.set_password(password)
         db.session.add(user)
+    else:
+        click.echo('Updating user...')
+        user.username = username
+        user.set_password(password)
 
     db.session.commit()
     click.echo('Done.')

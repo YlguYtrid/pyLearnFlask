@@ -2,9 +2,9 @@ line-length = 320
 
 output-format = "full"
 
-target-version = "py312"
-
 [lint]
+preview = true
+
 select = [
     "B",
     "C4",
