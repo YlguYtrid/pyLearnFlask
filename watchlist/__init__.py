@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config.update(
     SECRET_KEY=os.getenv('SECRET_KEY', 'dev'),
-    SQLALCHEMY_DATABASE_URI=prefix + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db')),
+    SQLALCHEMY_DATABASE_URI=prefix + os.path.join(os.path.dirname(__file__), os.getenv('DATABASE_FILE', 'data.db')),
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
 

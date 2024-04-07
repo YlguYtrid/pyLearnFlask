@@ -1,2 +1,3 @@
-FLASK_APP=watchlist
+FLASK_APP=sayhello
 FLASK_ENV=development
+BOOTSTRAP_SERVE_LOCAL=True
