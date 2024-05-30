@@ -1,12 +1,13 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug import Response
 
 from . import app, db
 from .models import Movie, User
 
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def index() -> str | Response:
     if request.method == 'GET':
         movies = db.session.scalars(db.select(Movie)).all()
         return render_template('index.html', movies=movies)
@@ -20,7 +21,7 @@ def index():
         flash('Invalid input.')
         return redirect(url_for('index'))
 
-    movie = Movie(title=title, year=year)
+    movie = Movie(title=title, year=year)  # type: ignore
     db.session.add(movie)
     db.session.commit()
     flash('Item created.')
@@ -29,7 +30,7 @@ def index():
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
-def edit(movie_id):
+def edit(movie_id) -> str | Response:
     movie = db.get_or_404(Movie, movie_id)
     if request.method == 'GET':
         return render_template('edit.html', movie=movie)
@@ -49,7 +50,7 @@ def edit(movie_id):
 
 @app.route('/movie/delete/<int:movie_id>', methods=['POST'])
 @login_required
-def delete(movie_id):
+def delete(movie_id) -> Response:
     movie = db.get_or_404(Movie, movie_id)
     db.session.delete(movie)
     db.session.commit()
@@ -59,7 +60,7 @@ def delete(movie_id):
 
 @app.route('/settings', methods=['GET', 'POST'])
 @login_required
-def settings():
+def settings() -> str | Response:
     if request.method == 'GET':
         return render_template('settings.html')
 
@@ -76,7 +77,7 @@ def settings():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login() -> str | Response:
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -98,7 +99,7 @@ def login():
 
 @app.route('/logout')
 @login_required
-def logout():
+def logout() -> Response:
     logout_user()
     flash('Goodbye.')
     return redirect(url_for('index'))

@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, url_for
-from werkzeug import Response
+from werkzeug.wrappers.response import Response
 
 from . import app, db
 from .forms import HelloForm
@@ -19,5 +19,5 @@ def index() -> Response | str:
         flash('Your message have been sent to the world!')
         return redirect(url_for('index'))
 
-    messages = db.session.execute(db.select(Message).order_by(Message.timestamp.desc())).scalars().all()
+    messages = db.session.scalars(db.select(Message).order_by(Message.timestamp.desc())).all()
     return render_template('index.html', form=form, messages=messages)

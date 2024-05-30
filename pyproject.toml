@@ -1,21 +1,3 @@
-[project]
-requires-python = ">=3.12"
-name = "pyLearnFlask"
-version = "0.1.0"
-description = ""
-authors = [
-    {name = "Ylgu Ytrid", email = "37318504+YlguYtrid@users.noreply.github.com"},
-]
-dependencies = [
-    "python-dotenv",
-    "flask",
-    "flask-login",
-    "flask-sqlalchemy",
-]
-readme = "README.md"
-license = {text = "MIT"}
-
-
 [tool.poetry]
 name = "pyLearnFlask"
 version = "0.1.0"
@@ -34,6 +16,9 @@ flask-pydantic = "^0.12.0"
 bootstrap-flask = "^2.3.3"
 flask-moment = "^1.0.5"
 faker = "^24.7.1"
+flask-ckeditor = "^0.5.1"
+flask-mailman = "^1.0.0"
+flask-migrate = "^4.0.7"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.2.1"
